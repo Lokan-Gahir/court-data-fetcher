@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Case Lookup{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-0">
+        <h2 class="h4 text-primary mb-0">
+            <i class="bi bi-search me-2"></i>Case Lookup
+        </h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label for="case_type" class="form-label">Case Type*</label>
+                    <select class="form-select" id="case_type" name="case_type" required>
+                        <option value="" selected disabled>Select type...</option>
+                        {% for value, label in case_types %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a case type
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="case_number" class="form-label">Case Number*</label>
+                    <input type="text" class="form-control" id="case_number" 
+                           name="case_number" placeholder="e.g. 1234ABC" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid case number
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="filing_year" class="form-label">Filing Year*</label>
+                    <input type="text" class="form-control" id="filing_year" 
+                           name="filing_year" placeholder="e.g. 2023" required>
+                    <div class="invalid-feedback">
+                        Must be 4-digit year
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid">
+                <button class="btn btn-primary btn-lg" type="submit">
+                    <i class="bi bi-search me-2"></i>Search Case Records
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-4 border-0">
+    <div class="card-body">
+        <h3 class="h5 mb-3">
+            <i class="bi bi-info-circle text-primary me-2"></i>Need Help?
+        </h3>
+        <ul class="list-unstyled">
+            <li class="mb-2">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Criminal cases: CR/1234/2023
+            </li>
+            <li class="mb-2">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Civil cases: CS/5678/2023
+            </li>
+            <li>
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Family cases: FA/9012/2023
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Client-side validation
+document.addEventListener('DOMContentLoaded', () => {
+    const yearField = document.getElementById('filing_year');
+    if (yearField) {
+        yearField.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+        });
+    }
+    
+    const caseNumberField = document.getElementById('case_number');
+    if (caseNumberField) {
+        caseNumberField.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Case Results{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 mb-0 text-primary">
+                <i class="bi bi-file-text me-2"></i>Case Details
+            </h2>
+            <a href="/" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-arrow-left me-1"></i>New Search
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <h3 class="h5 text-primary mb-3">
+                        <i class="bi bi-info-square me-2"></i>Basic Info
+                    </h3>
+                    <dl class="row">
+                        <dt class="col-sm-4">Case Number</dt>
+                        <dd class="col-sm-8">{{ case_data.case_number }}</dd>
+                        
+                        <dt class="col-sm-4">Filing Date</dt>
+                        <dd class="col-sm-8">{{ case_data.filing_date }}</dd>
+                        
+                        <dt class="col-sm-4">Next Hearing</dt>
+                        <dd class="col-sm-8">
+                            {{ case_data.next_hearing }}
+                            <span class="badge bg-info ms-2">45 days</span>
+                        </dd>
+                    </dl>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="h5 text-primary mb-3">
+                        <i class="bi bi-people me-2"></i>Parties
+                    </h3>
+                    <ul class="list-group">
+                        {% for party in case_data.parties %}
+                        <li class="list-group-item">
+                            <strong>{{ party.role }}:</strong> {{ party.name }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <h3 class="h5 text-primary mb-3">
+                        <i class="bi bi-file-earmark-text me-2"></i>Documents
+                    </h3>
+                    <div class="list-group">
+                        {% for doc in case_data.documents %}
+                        <a href="{{ doc.url }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between">
+                                <span>{{ doc.name }}</span>
+                                <small class="text-muted">{{ doc.date }}</small>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="h5 mb-0">
+                            <i class="bi bi-person-badge me-2"></i>Judicial Officer
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Presiding:</strong> {{ case_data.judge }}</p>
+                        <p class="mb-0"><strong>Stage:</strong> {{ case_data.stage }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted small">
+        Retrieved: {{ now.strftime('%Y-%m-%d %H:%M') }}
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>
+    This is a demonstration system using mock data. Actual case details would be retrieved from court records.
+</div>
+{% endblock %}
